@@ -17,5 +17,11 @@ pipeline{
                 }
             }
         }
+        stage('Docker Run'){
+            agent any
+            steps{
+                sh 'docker run chenadi/jenkins-playground:latest'
+            }
+        }
     }
 }
