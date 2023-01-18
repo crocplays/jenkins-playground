@@ -15,6 +15,22 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag pyimage:$(date +%s)
+      run: docker build . --file Dockerfile --tag chenadi/jenkins-playground:latest
     - run: docker images
-    - run: docker run --name test pyimage:$(date +%s)
+  
+  push_to_dockerhub:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Push image to dockhub
+        run: docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASS }}
+      - run: docker push chenadi/jenkins-playground:latest
+  
+  run_container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Create a container
+        run: docker run --name test chenadi/jenkins-playground:latest
+      
+  
