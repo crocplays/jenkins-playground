@@ -17,3 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag pyimage:$(date +%s)
     - run: docker images
+    - run: docker run --name test pyimage:$(date +%s)
