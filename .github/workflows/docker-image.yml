@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build_push_run:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag chenadi/jenkins-playground:latest
+    - run: docker images
+  
+
+    - name: Push image to dockhub
+      run: docker images
+    - run: docker login -u ${{ secrets.DOCKERHUB_USER }} -p ${{ secrets.DOCKERHUB_PASS }}
+    - run: docker push chenadi/jenkins-playground:latest
+      
+  
+    - name: Create a container
+      run: docker images
+    - run: docker run --name test chenadi/jenkins-playground:latest
+      
+  
